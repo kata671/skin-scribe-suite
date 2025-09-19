@@ -1,73 +1,111 @@
-# Welcome to your Lovable project
+# SkinCompass - Inteligentna Aplikacja Pielęgnacji Skóry 🌟
 
-## Project info
+## 📱 O Aplikacji
 
-**URL**: https://lovable.dev/projects/e78d7d1c-af05-4359-a96c-1c642a514b6c
+SkinCompass to nowoczesna aplikacja webowa do analizy problemów skórnych z wykorzystaniem sztucznej inteligencji. Aplikacja oferuje kompleksowe rozwiązania dla pielęgnacji skóry, włosów i paznokci.
 
-## How can I edit this code?
+## ✨ Główne Funkcje
 
-There are several ways of editing your application.
+- 🔍 **Analiza Zdjęć AI** - Inteligentna analiza problemów skórnych z rekomendacjami produktów
+- 📚 **Encyklopedia Skóry** - Szczegółowe informacje o problemach skórnych i ich leczeniu
+- 🎮 **Gra Edukacyjna** - Interaktywna gra "Salon Pielęgnacji" do nauki doboru kosmetyków
+- 📅 **Kalendarz i Progres** - Śledzenie postępów w pielęgnacji
+- 💬 **Blog i Forum** - Społeczność użytkowników i ekspertów
+- 🌍 **Tłumacz** - Natychmiastowe tłumaczenie na różne języki
 
-**Use Lovable**
+## 🚀 Szybki Start
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/e78d7d1c-af05-4359-a96c-1c642a514b6c) and start prompting.
+### Instalacja
 
-Changes made via Lovable will be committed automatically to this repo.
+```bash
+# Klonowanie repozytorium
+git clone https://github.com/your-username/skincompass.git
+cd skincompass
 
-**Use your preferred IDE**
+# Instalacja zależności
+npm install
+# lub
+bun install
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Uruchomienie aplikacji
 npm run dev
+# lub
+bun dev
 ```
 
-**Edit a file directly in GitHub**
+### Deployment
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+```bash
+# Budowanie aplikacji do produkcji
+npm run build
 
-**Use GitHub Codespaces**
+# Podgląd wersji produkcyjnej
+npm run preview
+```
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## 🛠️ Technologie
 
-## What technologies are used for this project?
+- **Frontend**: React 18, TypeScript, Vite
+- **Styling**: Tailwind CSS, shadcn/ui
+- **Routing**: React Router DOM
+- **Icons**: Lucide React
+- **Animacje**: Tailwind CSS Animations
+- **Responsywność**: Mobile-first design
 
-This project is built with:
+## 📁 Struktura Projektu
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+```
+src/
+├── components/           # Komponenty React
+│   ├── ui/              # Komponenty UI (shadcn)
+│   ├── HeroSection.tsx  # Sekcja główna
+│   ├── PhotoAnalysis.tsx# Analiza zdjęć
+│   ├── SkinGame.tsx     # Gra edukacyjna
+│   └── ...
+├── pages/               # Strony aplikacji
+├── assets/              # Zasoby statyczne
+├── lib/                 # Utilities i konfiguracja
+└── hooks/               # Custom React hooks
+```
 
-## How can I deploy this project?
+## 🎨 System Designu
 
-Simply open [Lovable](https://lovable.dev/projects/e78d7d1c-af05-4359-a96c-1c642a514b6c) and click on Share -> Publish.
+Aplikacja wykorzystuje zaawansowany system designu z:
+- Semantycznymi tokenami kolorów
+- Gradientami i efektami świetlnymi
+- Animacjami i przejściami
+- Wzorami molekularnymi w tle
+- Responsywnym designem
 
-## Can I connect a custom domain to my Lovable project?
+## 🔒 Bezpieczeństwo i Zgodność
 
-Yes, you can!
+Aplikacja zawiera odpowiednie klauzule prawne informujące, że:
+- Nie zastępuje porady medycznej
+- Wymaga konsultacji z dermatologiem w przypadku poważnych problemów
+- Służy wyłącznie celom edukacyjnym
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+## 📱 Funkcje Mobilne
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+- Pełna responsywność
+- Optymalizacja pod kątem urządzeń dotykowych
+- Szybkie ładowanie na urządzeniach mobilnych
+
+## 🌟 Planowane Funkcje
+
+- Integracja z aparatem do zdjęć w czasie rzeczywistym
+- System powiadomień o pielęgnacji
+- Społeczność użytkowników
+- Więcej gier edukacyjnych
+- Integracja z systemami e-commerce
+
+## 📄 Licencja
+
+Ten projekt jest licencjonowany pod MIT License.
+
+## 🤝 Wsparcie
+
+Jeśli masz pytania lub potrzebujesz pomocy, otwórz issue na GitHubie.
+
+---
+
+**SkinCompass** - Twój przewodnik w świecie zdrowej skóry! ✨

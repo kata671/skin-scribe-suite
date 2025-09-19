@@ -20,8 +20,11 @@ interface GameState {
   health: number;
   selectedProducts: string[];
   currentProblem: SkinProblem;
-  gamePhase: 'menu' | 'playing' | 'results';
+  gamePhase: 'menu' | 'playing' | 'results' | 'levelComplete';
   timeLeft: number;
+  streak: number;
+  hints: number;
+  perfectRounds: number;
 }
 
 interface SkinProblem {
@@ -38,39 +41,96 @@ const skinProblems: SkinProblem[] = [
   {
     id: "acne",
     name: "Trądzik młodzieńczy", 
-    description: "Nasza pacjentka ma problemy z zaskórnikami i stanami zapalnymi w strefie T.",
-    correctProducts: ["Żel salicylowy", "Serum z niacynamidem", "Krem antybakteryjny"],
-    wrongProducts: ["Bogaty krem nawilżający", "Olej arganowy", "Scrub z dużymi cząsteczkami"],
+    description: "18-letnia Ania ma problemy z zaskórnikami na czole i brodzie oraz bolesnymi krostkami na policzkach. Skóra jest tłusta w strefie T.",
+    correctProducts: ["Żel salicylowy", "Serum z niacynamidem", "Krem antybakteryjny", "Żel oczyszczający z CeraVe", "Toner z BHA Paula's Choice"],
+    wrongProducts: ["Bogaty krem nawilżający", "Olej arganowy", "Scrub z dużymi cząsteczkami", "Pasta z sodą oczyszczoną", "Cytryna na twarz"],
     severity: 3,
     avatar: "👧"
   },
   {
     id: "dryness",
     name: "Skóra sucha i szorowa",
-    description: "Skóra jest napięta, łuszczy się i potrzebuje intensywnego nawilżenia.",
-    correctProducts: ["Kremowa emulsja", "Serum z kwasem hialuronowym", "Olej pielęgnacyjny"],
-    wrongProducts: ["Żel oczyszczający", "Toner z alkoholem", "Peeling kwasowy"],
+    description: "Marta, 35 lat, skarży się na napięcie skóry, łuszczenie się i czerwone plamy. Skóra reaguje uczuleniem na wiele produktów.",
+    correctProducts: ["Kremowa emulsja", "Serum z kwasem hialuronowym", "Olej pielęgnacyjny", "Krem z ceramidami CeraVe", "Mleczko oczyszczające Avène"],
+    wrongProducts: ["Żel oczyszczający", "Toner z alkoholem", "Peeling kwasowy", "Ocet jabłkowy bezpośrednio", "Tonik ścierający"],
     severity: 2,
     avatar: "👩"
   },
   {
     id: "aging",
     name: "Pierwsze oznaki starzenia", 
-    description: "Pojawiają się drobne zmarszczki i skóra traci elastyczność.",
-    correctProducts: ["Krem z retinolem", "Serum z witaminą C", "Krem SPF 50"],
-    wrongProducts: ["Mydło antybakteryjne", "Tonik ścierający", "Krem bez składników aktywnych"],
+    description: "Karolina, 42 lata, zauważa drobne zmarszczki wokół oczu, utratę elastyczności i nierównomierny koloryt skóry.",
+    correctProducts: ["Krem z retinolem", "Serum z witaminą C", "Krem SPF 50", "Serum z peptydami Paula's Choice", "Krem z kolagenem Olay"],
+    wrongProducts: ["Mydło antybakteryjne", "Tonik ścierający", "Krem bez składników aktywnych", "Pasta do zębów na pryszcze", "Scrub z dużymi cząsteczkami"],
     severity: 4,
     avatar: "👩‍🦳"
+  },
+  {
+    id: "rosacea",
+    name: "Rumień różowaty",
+    description: "Beata ma stałe zaczerwienienia na policzkach i nosie, widoczne naczynia krwionośne i uczucie palenia skóry.",
+    correctProducts: ["Krem uspokajający Avène", "Serum z niacynamidem", "Krem mineralny SPF 50+", "Żel micellarny La Roche-Posay", "Krem na naczynka"],
+    wrongProducts: ["Peeling kwasowy", "Toner z alkoholem", "Scrub z dużymi cząsteczkami", "Serum z retinolem The Ordinary", "Żel antybakteryjny Vichy"],
+    severity: 3,
+    avatar: "👩‍🦰"
+  },
+  {
+    id: "hyperpigmentation",
+    name: "Przebarwienia posłoneczne",
+    description: "Magda ma ciemne plamy po ekspozycji słonecznej i blizny potrądzikowe, które chce rozjaśnić.",
+    correctProducts: ["Serum z witaminą C", "Serum z arbutyną", "Krem SPF 50", "Serum z kwasem azelainowym", "Krem na przebarwienia"],
+    wrongProducts: ["Cytryna na twarz", "Pasta z sodą oczyszczoną", "Ocet jabłkowy bezpośrednio", "Scrub z dużymi cząsteczkami", "Mydło antybakteryjne"],
+    severity: 4,
+    avatar: "👩‍💼"
+  },
+  {
+    id: "sensitive",
+    name: "Skóra wrażliwa i reaktywna",
+    description: "Ola ma bardzo wrażliwą skórę, która reaguje na większość kosmetyków zaczerwienieniem i swędzeniem.",
+    correctProducts: ["Mleczko oczyszczające Avène", "Krem uspokajający Avène", "Woda micelarna Bioderma", "Krem z ceramidami", "Toner bezkwasowy"],
+    wrongProducts: ["Peeling kwasowy", "Serum z retinolem", "Toner z alkoholem", "Żel antybakteryjny", "Pasta z sodą oczyszczoną"],
+    severity: 2,
+    avatar: "🧚‍♀️"
   }
 ];
 
 const allProducts = [
-  "Żel salicylowy", "Serum z niacynamidem", "Krem antybakteryjny",
-  "Kremowa emulsja", "Serum z kwasem hialuronowym", "Olej pielęgnacyjny", 
-  "Krem z retinolem", "Serum z witaminą C", "Krem SPF 50",
-  "Bogaty krem nawilżający", "Olej arganowy", "Scrub z dużymi cząsteczkami",
-  "Żel oczyszczający", "Toner z alkoholem", "Peeling kwasowy",
-  "Mydło antybakteryjne", "Tonik ścierający", "Krem bez składników aktywnych"
+  // Oczyszczanie
+  "Żel salicylowy", "Żel oczyszczający z CeraVe", "Pianka oczyszczająca Eucerin", 
+  "Olejek do demakijażu Clinique", "Mleczko oczyszczające Avène", "Żel micellarny La Roche-Posay",
+  "Balsam oczyszczający The Ordinary", "Woda micelarna Bioderma", "Żel antybakteryjny Vichy",
+  
+  // Serum i esencje  
+  "Serum z niacynamidem", "Serum z witaminą C", "Serum z kwasem hialuronowym",
+  "Serum z retinolem The Ordinary", "Serum z peptydami Paula's Choice", "Esencja z ceramidami",
+  "Serum z bakuchiolem", "Serum z kwasem azelainowym", "Serum z arbutyną",
+  
+  // Kremy nawilżające
+  "Kremowa emulsja", "Bogaty krem nawilżający", "Krem z ceramidami CeraVe",
+  "Krem regeneracyjny Eucerin", "Krem uspokajający Avène", "Żel-krem Neutrogena",
+  "Krem z kolagenem Olay", "Krem z kwasem hialuronowym", "Krem z aloesem",
+  
+  // Ochrona przeciwsłoneczna
+  "Krem SPF 50", "Fluid SPF 30 La Roche-Posay", "Krem mineralny SPF 50+",
+  "Spray ochronny SPF 30", "Krem koloryzujący SPF 25", "Żel SPF dla skóry tłustej",
+  
+  // Oleje i balsamy
+  "Olej arganowy", "Olej pielęgnacyjny", "Olej różany", "Olej jojoba",
+  "Balsam z masłem shea", "Olej marula The Ordinary", "Olej z dzikiej róży",
+  
+  // Peelingi i tonery
+  "Peeling kwasowy", "Toner z BHA Paula's Choice", "Peeling enzymatyczny",
+  "Toner z kwasem glikolowym", "Peeling z kwasem migdałowym", "Toner bezkwasowy",
+  
+  // Produkty specjalistyczne
+  "Krem z retinolem", "Krem antybakteryjny", "Krem na trądzik", 
+  "Żel na blizny", "Krem na przebarwienia", "Serum na rozstępy",
+  "Krem na naczynka", "Żel na sińce", "Krem na łuszczycę",
+  
+  // Produkty nieprawidłowe/szkodliwe
+  "Scrub z dużymi cząsteczkami", "Toner z alkoholem", "Mydło antybakteryjne",
+  "Tonik ścierający", "Krem bez składników aktywnych", "Pasta z sodą oczyszczoną",
+  "Ocet jabłkowy bezpośrednio", "Cytryna na twarz", "Pasta do zębów na pryszcze"
 ];
 
 export const SkinGame = () => {
@@ -81,7 +141,10 @@ export const SkinGame = () => {
     selectedProducts: [],
     currentProblem: skinProblems[0],
     gamePhase: 'menu',
-    timeLeft: 60
+    timeLeft: 60,
+    streak: 0,
+    hints: 3,
+    perfectRounds: 0
   });
 
   const [isPlaying, setIsPlaying] = useState(false);
@@ -109,9 +172,32 @@ export const SkinGame = () => {
       selectedProducts: [],
       currentProblem: skinProblems[Math.floor(Math.random() * skinProblems.length)],
       gamePhase: 'playing',
-      timeLeft: 60
+      timeLeft: 60,
+      streak: 0,
+      hints: 3,
+      perfectRounds: 0
     });
     setIsPlaying(true);
+  };
+
+  const useHint = () => {
+    if (gameState.hints <= 0) return;
+    
+    const correctNotSelected = gameState.currentProblem.correctProducts.filter(
+      product => !gameState.selectedProducts.includes(product)
+    );
+    
+    if (correctNotSelected.length > 0) {
+      const hintProduct = correctNotSelected[0];
+      // Highlight the hint product temporarily
+      setGameState(prev => ({
+        ...prev,
+        hints: prev.hints - 1
+      }));
+      
+      // Show toast with hint
+      console.log(`Podpowiedź: Spróbuj ${hintProduct}`);
+    }
   };
 
   const selectProduct = (product: string) => {
@@ -122,25 +208,57 @@ export const SkinGame = () => {
     
     let newScore = gameState.score;
     let newHealth = gameState.health;
+    let newStreak = gameState.streak;
     
     if (isCorrect) {
-      newScore += 10 * gameState.level;
+      const basePoints = 10 * gameState.level;
+      const timeBonus = Math.floor(gameState.timeLeft / 10);
+      const streakBonus = newStreak * 5;
+      newScore += basePoints + timeBonus + streakBonus;
+      newStreak += 1;
     } else {
-      newHealth -= 15;
+      const damage = 15 + gameState.level * 2;
+      newHealth -= damage;
+      newStreak = 0;
     }
     
     setGameState(prev => ({
       ...prev,
       selectedProducts: newSelected,
       score: newScore,
-      health: newHealth
+      health: newHealth,
+      streak: newStreak
     }));
 
     // Sprawdź czy wszystkie poprawne produkty zostały wybrane
-    if (gameState.currentProblem.correctProducts.every(p => 
-        newSelected.includes(p) || gameState.selectedProducts.includes(p)
-    )) {
-      nextLevel();
+    const correctProductsSelected = gameState.currentProblem.correctProducts.filter(p => 
+      newSelected.includes(p)
+    ).length;
+    
+    const requiredProducts = Math.min(3, gameState.currentProblem.correctProducts.length);
+    
+    if (correctProductsSelected >= requiredProducts) {
+      const hasWrongProducts = newSelected.some(p => 
+        gameState.currentProblem.wrongProducts.includes(p)
+      );
+      
+      if (!hasWrongProducts) {
+        // Perfect round bonus
+        setGameState(prev => ({
+          ...prev,
+          score: prev.score + 50,
+          perfectRounds: prev.perfectRounds + 1
+        }));
+      }
+      
+      setGameState(prev => ({
+        ...prev,
+        gamePhase: 'levelComplete'
+      }));
+      
+      setTimeout(() => {
+        nextLevel();
+      }, 2000);
     }
     
     // Sprawdź czy zdrowie spadło do zera
